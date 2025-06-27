@@ -29,7 +29,19 @@ public class UserController {
         return userService.updateUser(userDTO);}
 
     @DeleteMapping("/deleteUser")
-    public String deleteUser(){
-        return "User Removed!";
+    public Boolean deleteUser(@RequestBody UserDTO userDTO){
+        return userService.deleteUser(userDTO);
     }
+
+    @GetMapping("/getUserById/{userId}")
+    public UserDTO getUserById(@PathVariable int userId){
+        return userService.getUserById(userId);
+    }
+
+    @GetMapping("/getUserByNameAndAge/{userName}/{userAge}")
+    public int getUserByNameAndAge(@PathVariable String userName,@PathVariable int userAge){
+        return userService.getUserByNameAndAge(userName, userAge);
+    }
+
+
 }
