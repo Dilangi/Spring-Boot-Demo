@@ -1,10 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.UserDTO;
+import com.example.demo.exception.RecordNotExistException;
 import com.example.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,10 +40,6 @@ public class UserController {
     @GetMapping("/getUserById")
     public ResponseEntity<UserDTO> getUserById(@RequestParam int id){
         UserDTO user = userService.getUserById(id);
-        if (user == null) {
-            log.info("No such user with id"+id);
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(user);
     }
 

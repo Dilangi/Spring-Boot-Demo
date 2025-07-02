@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entity.User;
+import com.example.demo.exception.RecordNotExistException;
 import com.example.demo.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -42,6 +43,9 @@ public class UserService {
 
     public UserDTO getUserById(int userId) {
         User user = userRepository.getUserById(userId);
+        if (user == null) {
+            throw new RecordNotExistException("User with ID " + userId + " not found.");
+        }
         return modelMapper.map(user, UserDTO.class);
     }
 
