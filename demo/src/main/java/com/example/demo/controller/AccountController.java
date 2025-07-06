@@ -21,7 +21,6 @@ public class AccountController {
 
     @PostMapping("/login")
     public String login(@RequestBody AccountDTO dto){
-        boolean success = service.login(dto);
-        return success? "Login Succssful" : "Invalid Credentials";
+        return service.login(dto);
     }
 }
