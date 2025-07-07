@@ -5,12 +5,16 @@ import com.example.demo.entity.Account;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.ArrayList;
 
 @Service
-public class AccountService {
+public class AccountService implements UserDetailsService {
     @Autowired
     private AccountRepository repo;
 
@@ -19,7 +23,7 @@ public class AccountService {
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public String register(@RequestBody AccountDTO dto){
+    public String register(AccountDTO dto){
         if(repo.findAccountByUsername(dto.getUsername()).isPresent()){
             return "Username is already exists";
         }
@@ -32,7 +36,7 @@ public class AccountService {
         return "Account created successfully!";
     }
 
-    public String login(@RequestBody AccountDTO dto){
+    public String login(AccountDTO dto){
         Account account = repo.findAccountByUsername(dto.getUsername())
                 .orElse(null);
 
@@ -41,5 +45,15 @@ public class AccountService {
         }
 
         return "Invalid credentials";
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Account account = repo.findAccountByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        return  new org.springframework.security.core.userdetails.User(
+                account.getUsername(), account.getPassword(), new ArrayList<>()
+        );
     }
 }

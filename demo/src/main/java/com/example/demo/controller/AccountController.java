@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.AccountDTO;
 import com.example.demo.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,12 +16,14 @@ public class AccountController {
     private AccountService service;
 
     @PostMapping("/register")
-    public String register(@RequestBody AccountDTO dto){
-        return service.register(dto);
+    public ResponseEntity<String> register(@RequestBody AccountDTO dto){
+        String result = service.register(dto);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody AccountDTO dto){
-        return service.login(dto);
+    public ResponseEntity<String> login(@RequestBody AccountDTO dto){
+        String tokenOrError = service.login(dto);
+        return ResponseEntity.ok(tokenOrError);
     }
 }
