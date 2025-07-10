@@ -20,13 +20,13 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/auth/**").permitAll()  // Open /auth/** to everyone
                 .anyRequest().authenticated()             // Everything else requires authentication
             )
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint(
-                                ((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
-                                )
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            .exceptionHandling(ex -> ex
+                .authenticationEntryPoint(
+                    ((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized")
                         )
-                );
+                )
+            );
         return http.build();
     }
 

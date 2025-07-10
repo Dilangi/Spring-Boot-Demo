@@ -41,7 +41,7 @@ public class AccountService implements UserDetailsService {
                 .orElse(null);
 
         if(account != null && encoder.matches(dto.getPassword(), account.getPassword())){
-            return jwtUtil.generateToken(account.getUsername());
+            return jwtUtil.generateAccessToken(account.getUsername());
         }
 
         return "Invalid credentials";

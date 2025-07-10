@@ -2,32 +2,39 @@ package com.example.demo.util;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
 import java.util.Date;
+
+import static com.example.demo.constants.AppConstants.JWT.*;
 
 @Component
 public class JwtUtil {
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    private final long EXPIRATION_TIME = 1000 * 60 * 60; // 1hour
+    public String generateAccessToken(String username) {
+        return generateToken(username, ACCESS_TOKEN_VALIDITY);
+    }
 
-    public String generateToken(String username){
+    public String generateRefreshToken(String username) {
+        return generateToken(username, REFRESH_TOKEN_VALIDITY);
+    }
+
+    private String generateToken(String username, long validityMillis) {
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + validityMillis);
+
         return Jwts.builder()
                 .setSubject(username)
-                .setIssuer("DemoApplication") //use the domain name
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(key)
+                .setIssuer("DemoApplication") // Optionally use your domain here
+                .setIssuedAt(now)
+                .setExpiration(expiry)
+                .signWith(KEY)
                 .compact();
     }
 
     public  String extractUsername(String token){
         return Jwts.parserBuilder()
-                .setSigningKey(key).build()
+                .setSigningKey(KEY).build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
@@ -35,7 +42,7 @@ public class JwtUtil {
 
     public boolean isTokenValid(String token){
         try{
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(KEY).build().parseClaimsJws(token);
             return true;
         }catch (JwtException e){
             return false;
