@@ -34,7 +34,8 @@ public class JwtUtil {
 
     public  String extractUsername(String token){
         return Jwts.parserBuilder()
-                .setSigningKey(KEY).build()
+                .setSigningKey(KEY)
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
@@ -42,7 +43,10 @@ public class JwtUtil {
 
     public boolean isTokenValid(String token){
         try{
-            Jwts.parserBuilder().setSigningKey(KEY).build().parseClaimsJws(token);
+            Jwts.parserBuilder()
+                    .setSigningKey(KEY)
+                    .build()
+                    .parseClaimsJws(token);
             return true;
         }catch (JwtException e){
             return false;

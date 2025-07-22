@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.AccountDTO;
+import com.example.demo.dto.AuthResponseDTO;
 import com.example.demo.entity.Account;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.util.JwtUtil;
@@ -36,15 +37,17 @@ public class AccountService implements UserDetailsService {
         return "Account created successfully!";
     }
 
-    public String login(AccountDTO dto){
+    public AuthResponseDTO login(AccountDTO dto){
         Account account = repo.findAccountByUsername(dto.getUsername())
                 .orElse(null);
 
         if(account != null && encoder.matches(dto.getPassword(), account.getPassword())){
-            return jwtUtil.generateAccessToken(account.getUsername());
+            String accessToken = jwtUtil.generateAccessToken(account.getUsername());
+            String refreshToken = jwtUtil.generateRefreshToken(account.getUsername());
+            return new AuthResponseDTO(accessToken, refreshToken);
         }
 
-        return "Invalid credentials";
+        throw new RuntimeException("Invalid credentials");
     }
 
     @Override
