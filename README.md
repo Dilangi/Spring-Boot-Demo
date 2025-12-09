@@ -1,1 +1,1 @@
-Demonstrates practical backend development and security concepts.
+Collection of APIs need in applications in general.
