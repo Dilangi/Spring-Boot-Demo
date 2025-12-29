@@ -14,4 +14,8 @@ public class DemoApplication {
 	@Bean
 	public ModelMapper modelMapper(){return new ModelMapper();}
 
+	//Add features, document code, write tests
+	//Deploy one service to AWS (EC2 or ECS)
+	//Update GitHub with clear README files
+
 }
