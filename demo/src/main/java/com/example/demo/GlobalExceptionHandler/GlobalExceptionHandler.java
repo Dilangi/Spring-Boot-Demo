@@ -16,7 +16,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     @ExceptionHandler(RecordNotExistException.class)
     public ResponseEntity<Map<String, Object>> handleRecordNotExistException(RecordNotExistException ex) {
-//        log.error("test error");
+        log.error("test error");
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put("timestamp", LocalDateTime.now());
         errorResponse.put("status", HttpStatus.NOT_FOUND.value());
