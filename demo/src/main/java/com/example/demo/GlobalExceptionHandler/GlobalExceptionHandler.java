@@ -1,6 +1,7 @@
 package com.example.demo.GlobalExceptionHandler;
 
 import com.example.demo.exception.RecordNotExistException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +16,14 @@ import java.util.Map;
 @Slf4j
 public class GlobalExceptionHandler {
     @ExceptionHandler(RecordNotExistException.class)
-    public ResponseEntity<Map<String, Object>> handleRecordNotExistException(RecordNotExistException ex) {
+    public ResponseEntity<Map<String, Object>> handleRecordNotExistException(RecordNotExistException ex, HttpServletRequest request) {
         log.error("test error");
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put("timestamp", LocalDateTime.now());
         errorResponse.put("status", HttpStatus.NOT_FOUND.value());
         errorResponse.put("error", "Record Not Exist");
         errorResponse.put("message", ex.getMessage());
-        errorResponse.put("path", "/api/v1/user/getUserById/{userId}"); // optionally dynamic
+        errorResponse.put("path", request.getRequestURI());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 

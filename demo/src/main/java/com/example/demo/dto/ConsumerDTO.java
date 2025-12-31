@@ -1,14 +1,13 @@
 package com.example.demo.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class UserDTO {
-    private int id;
+@Getter
+@Setter
+public class ConsumerDTO {
+    private Integer id;
     private String name;
     private int age;
     private String gender;
