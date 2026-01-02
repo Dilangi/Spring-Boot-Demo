@@ -6,6 +6,7 @@ import com.example.demo.entity.Account;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -55,7 +56,7 @@ public class AccountService implements UserDetailsService {
         Account account = repo.findAccountByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return  new org.springframework.security.core.userdetails.User(
+        return  new User(
                 account.getUsername(), account.getPassword(), new ArrayList<>()
         );
     }
