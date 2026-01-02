@@ -9,15 +9,17 @@ RESTful APIs built with Spring Boot demonstrating user authentication and CRUD o
 - Full CRUD operations (Create, Read, Update, Delete)
 - MySQL database integration
 - Exception handling and input validation
+- Unit tests with Mockito
 
 ## Tech Stack
 
 - Java 25
-- Spring Boot 3.x
-- Spring Security
-- JWT (JSON Web Tokens)
-- MySQL
+- Spring Boot
+- Spring Security (JWT Authentication)
+- Spring Data JPA (Hibernate)
+- MySQL (local), AWS RDS (planned)
 - Maven
+- JUnit 5 & Mockito
 
 ## Prerequisites
 - JDK 17+
@@ -49,6 +51,10 @@ spring.datasource.password=your_password
 ```bash
 mvn spring-boot:run
 ```
+## Common Issues
+
+- MySQL connection error → ensure MySQL is running
+- JWT Unauthorized → check Authorization header format
 
 ## API Endpoints available at `http://localhost:4999`
 
@@ -68,7 +74,7 @@ mvn spring-boot:run
 ```bash
 curl -X POST http://localhost:4999/api/signup \
   -H "Content-Type: application/json" \
-  -d '{"username":"user","email":"user@example.com","password":"password123"}'
+  -d '{"username":"user","password":"password123"}'
 ```
 
 ### Login
@@ -98,18 +104,21 @@ Authorization: Bearer <your-jwt-token>
 
 ## Testing
 ```bash
+Run all tests:
 mvn test
+
+Run a single test:
+mvn -Dtest=AccountServiceTest test
 ```
 
 ## Current Status
 
-Implemented: User signup, login, JWT token generation, CRUD endpoints  
-In Progress: Role-based access control, comprehensive input validation, unit tests
+Implemented: User signup, login, JWT token generation, CRUD endpoints, unit tests (for service)
+In Progress: Role-based access control, comprehensive input validation, improve unit test coverage
 
 ## Future Enhancements
 
 - Deploy to AWS EC2
-- Add comprehensive unit tests (JUnit + Mockito)
 - Implement role-based access control (RBAC)
 - Add input validation across all endpoints
 - Implement refresh token mechanism
