@@ -22,8 +22,9 @@ public class ConsumerService {
     private ModelMapper modelMapper;
 
     public ConsumerDTO saveUser(ConsumerDTO consumerDTO){
-        consumerRepository.save(modelMapper.map(consumerDTO, Consumer.class));
-        return consumerDTO;
+        Consumer consumer= modelMapper.map(consumerDTO, Consumer.class);
+        Consumer saved = consumerRepository.save(consumer);
+        return modelMapper.map(saved, ConsumerDTO.class);
     }
 
     public List<ConsumerDTO> getUsers() {
@@ -34,7 +35,7 @@ public class ConsumerService {
     public ConsumerDTO updateUser(Integer id, ConsumerDTO consumerDTO) {
         Consumer consumer = consumerRepository.findById(id)
                 .orElseThrow(() ->
-                        new RecordNotExistException("Account with id " + id + " not found"));
+                        new RecordNotExistException("Customer with id " + id + " not found"));
 
         consumer.setName(consumerDTO.getName());
         consumer.setAge(consumerDTO.getAge());
@@ -47,17 +48,17 @@ public class ConsumerService {
 
     public void deleteUser(Integer id) {
         if (!consumerRepository.existsById(id)) {
-            throw new RecordNotExistException("Account with id " + id + " not found");
+            throw new RecordNotExistException("Customer with id " + id + " not found");
         }
         consumerRepository.deleteById(id);
     }
 
     public ConsumerDTO getUserById(int userId) {
-        Consumer user = consumerRepository.getUserById(userId);
-        if (user == null) {
-            throw new RecordNotExistException("User with ID " + userId + " not found.");
+        Consumer consumer = consumerRepository.getUserById(userId);
+        if (consumer == null) {
+            throw new RecordNotExistException("Customer with ID " + userId + " not found.");
         }
-        return modelMapper.map(user, ConsumerDTO.class);
+        return modelMapper.map(consumer, ConsumerDTO.class);
     }
 
     public ConsumerDTO getUserByNameAndAge(String name, int age) {

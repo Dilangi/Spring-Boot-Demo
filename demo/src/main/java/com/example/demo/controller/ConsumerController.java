@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.ConsumerDTO;
 import com.example.demo.service.ConsumerService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,18 +24,18 @@ public class ConsumerController {
     }
 
     @PostMapping("/addUser")
-    public ConsumerDTO addUser(@RequestBody ConsumerDTO consumerDTO){
+    public ConsumerDTO addUser(@Valid @RequestBody ConsumerDTO consumerDTO){
         return consumerService.saveUser(consumerDTO);
     }
 
     @PutMapping("/updateUser/{id}")
-    public ResponseEntity<ConsumerDTO> updateUser(@PathVariable Integer id, @RequestBody ConsumerDTO consumerDTO){
+    public ResponseEntity<ConsumerDTO> updateUser(@PathVariable Integer id, @Valid @RequestBody ConsumerDTO consumerDTO){
         return ResponseEntity.ok(consumerService.updateUser(id, consumerDTO));}
 
     @DeleteMapping("/deleteUser/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Integer id){
+    public ResponseEntity<Void> deleteUser(@PathVariable Integer id){
         consumerService.deleteUser(id);
-        return ResponseEntity.ok("Account deleted successfully");
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/getUserById")
