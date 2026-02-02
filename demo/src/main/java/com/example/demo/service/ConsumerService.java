@@ -36,9 +36,13 @@ public class ConsumerService {
                 .orElseThrow(() ->
                         new RecordNotExistException("Account with id " + id + " not found"));
 
-        consumerRepository.save(consumer);
+        consumer.setName(consumerDTO.getName());
+        consumer.setAge(consumerDTO.getAge());
+        consumer.setGender(consumer.getGender());
 
-        return modelMapper.map(consumer, ConsumerDTO.class);
+        Consumer updatedConsumer = consumerRepository.save(consumer);
+
+        return modelMapper.map(updatedConsumer, ConsumerDTO.class);
     }
 
     public void deleteUser(Integer id) {

@@ -197,7 +197,6 @@ mvn -Dtest=AccountServiceTest test
 
 ## Future Enhancements
 
-- Role-based access control
 - Implement role-based access control (RBAC)
 - Add input validation across all endpoints
 - Implement refresh token mechanism
